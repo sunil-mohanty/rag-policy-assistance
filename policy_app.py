@@ -11,6 +11,7 @@ Run with:
 (alongside: ollama serve, knowledge_service.py, and admin_app.py)
 """
 
+import os
 import re
 import time
 import random
@@ -18,7 +19,10 @@ import base64
 import requests
 import streamlit as st
 
-KNOWLEDGE_SERVICE_URL = "http://127.0.0.1:8600"
+# Local dev default stays 127.0.0.1. On Railway, set this env var to the
+# backend service's private networking address, e.g.
+# http://backend.railway.internal:8600 — see railway/RAILWAY_DEPLOY.md
+KNOWLEDGE_SERVICE_URL = os.environ.get("KNOWLEDGE_SERVICE_URL", "http://127.0.0.1:8600")
 
 BOT_AVATAR = "assets/bot-avatar.png"
 USER_AVATAR = "assets/user-avatar.png"
@@ -289,6 +293,10 @@ html, body, [class*="css"] {{
     padding: 4px 8px;
 }}
 
+/* Sidebar fixed/no-minimize — DESKTOP ONLY. On mobile there's no room
+   for a permanently-open sidebar alongside content, so the toggle needs
+   to stay available there (see media query below, which overrides this
+   back to visible under 640px). */
 [data-testid="collapsedControl"] {{
     display: none !important;
 }}
@@ -297,6 +305,35 @@ html, body, [class*="css"] {{
 }}
 button[kind="header"] {{
     display: none !important;
+}}
+
+/* --- Mobile fixes (screens under 640px) --------------------------- */
+@media (max-width: 640px) {{
+    /* Stack the banner instead of pinning the logo to the left edge —
+       on a narrow screen the absolutely-positioned logo and the
+       centered title text collide/overlap otherwise. */
+    .hero-banner {{
+        flex-direction: column;
+        gap: 12px;
+        padding: 20px;
+    }}
+    .hero-banner img {{
+        position: static;
+        transform: none;
+    }}
+    .hero-banner .hero-text {{
+        text-align: center;
+    }}
+
+    /* Restore the sidebar's own toggle on mobile — without it there's
+       no way to open/close the drawer on a screen too narrow for the
+       sidebar and main content to coexist. */
+    [data-testid="collapsedControl"] {{
+        display: flex !important;
+    }}
+    [data-testid="stSidebarCollapseButton"] {{
+        display: flex !important;
+    }}
 }}
 </style>
 
