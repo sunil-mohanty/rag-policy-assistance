@@ -58,6 +58,7 @@ fi
 echo "=== 6. Starting Admin app (background) ==="
 streamlit run admin_app.py \
     --server.port 8502 --server.address 0.0.0.0 --server.headless true \
+    --server.enableCORS false --server.enableXsrfProtection false \
     > /workspace/admin_app.log 2>&1 &
 
 echo ""
@@ -70,4 +71,5 @@ echo ""
 # need to detach safely instead of leaving this terminal open, wrap the
 # whole script in tmux: `tmux new -s demo`, run this script, Ctrl+B D.
 exec streamlit run policy_app.py \
-    --server.port 8501 --server.address 0.0.0.0 --server.headless true
+    --server.port 8501 --server.address 0.0.0.0 --server.headless true \
+    --server.enableCORS false --server.enableXsrfProtection false
