@@ -73,3 +73,8 @@ echo ""
 exec streamlit run policy_app.py \
     --server.port 8501 --server.address 0.0.0.0 --server.headless true \
     --server.enableCORS false --server.enableXsrfProtection false
+
+ #run the mobile app
+exec streamlit run policy_mobile_app.py \
+    --server.port 8503 --server.address 0.0.0.0 --server.headless true \
+    --server.enableCORS false --server.enableXsrfProtection false   
