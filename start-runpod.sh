@@ -72,7 +72,8 @@ echo ""
 # whole script in tmux: `tmux new -s demo`, run this script, Ctrl+B D.
 exec streamlit run policy_app.py \
     --server.port 8501 --server.address 0.0.0.0 --server.headless true \
-    --server.enableCORS false --server.enableXsrfProtection false
+    --server.enableCORS false --server.enableXsrfProtection false \
+    > /workspace/policy_app.log 2>&1 &
 
  #run the mobile app
 exec streamlit run policy_mobile_app.py \
